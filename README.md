@@ -95,4 +95,12 @@ A lifecycle method is a function on a React component class that is automaticall
 
 `componentDidMount()` will automatically called by React immediately AFTER this component has shown up inside the DOM. However, it doesn't make a difference whether or not we call that action creator before or after the component renders on screen, because fetching data is an asynchronous operation. Whenever we reach out to API to fetch some data, it takes some amount of time to fetch the data and had it be returned to our browser, and React doesn't have any concept to figure out not render the component until after the pre-loading operation, but always render the component as soon as it can.
 
-**9. **
+**9. Redux Form** [[Examples Document (v6.6.3)]](https://redux-form.com/6.6.3/examples/)
+
+Redux form is all about handling any type of form that you put together with Redux, validating the input and then submitting the form in some fashion. To use Redux form, here are the steps:
+
+**1st.** Identify the different states that exist in form, which in this case are title, categories and contents;<br>
+**2nd.** For each state, create one `<Field>` component. A **Field component** is created by Redux form to represent a distinct input that will be visible on screen, we need to tell Field what type of input to receive from user;<br>
+**3rd.** User changes a Field input (enter some text, check the checkbox, etc.) and Redux form automatically handle all changes for us;<br>
+**4th.** User submit the form, we pass two callbacks to Redux from that validate the input user provided, if valid, handle form submittal. This is where we have control back from Redux form.
+
