@@ -1,17 +1,22 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createPost } from '../actions';
 
 class PostsNew extends Component {
 	renderField(field) {
+		const className = `form-control ${field.meta.touched && field.meta.error ? 'is-invalid' : ''}`;
+
 		return (
 			<div className="form-group">
 				<label>{field.label}</label>	
 				<input
-					className="form-control"
+					className={className}
 					type="text"
 					{...field.input}
 				/>
-				{field.meta.error}
+				<span className="invalid-feedback">{field.meta.touched ? field.meta.error : ''}</span>
 			</div>
 		);
 	}
@@ -20,7 +25,16 @@ class PostsNew extends Component {
 	// Our side: take the validated data (values) and send it to back-end derver
 
 	onSubmit(values) {
-		console.log(values);
+		// If we call push() with a route, whenever this line of code
+		// is executed, we will automatically and INSTANTLY navigate back
+		// to '/' (the string here we push in needs to match one of the 
+		// different routes that we defined inside of application).
+		// To navigate after the post has been created, we put push() inside
+		// createPost() as callback, so if the action creator calls this function, it will
+		// automatically navigate back.
+		this.props.createPost(values, () => {
+			this.props.history.push('/');
+		});
 	}
 
 	render() {
@@ -50,6 +64,7 @@ class PostsNew extends Component {
 					component={this.renderField}
 				/>
 				<button type="submit" className="btn btn-primary">Submit</button>
+				<Link to="/" className="btn btn-danger">Cancel</Link>
 			</form>
 		);
 	}
@@ -92,4 +107,6 @@ function validate(values) {
 export default reduxForm({
 	validate,
 	form: 'PostsNewForm'
-})(PostsNew);
+})(
+	connect(null, { createPost })(PostsNew)
+);
